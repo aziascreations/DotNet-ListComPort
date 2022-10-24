@@ -78,8 +78,8 @@ internal static class Program {
 			Console.WriteLine("");
 			Console.WriteLine("GitHub repositories:");
 			Console.WriteLine("├─> https://github.com/aziascreations/DotNet-Arguments");
+			Console.WriteLine("├─> https://github.com/aziascreations/DotNet-ListComPort");
 			Console.WriteLine("└─> https://github.com/aziascreations/DotNet-RegistryHelpers");
-			// TODO: Add final repo link here !
 			Console.WriteLine("");
 			Console.WriteLine("This software and all its libraries are licensed under the MIT license.");
 			return ErrorCodes.NoError;
