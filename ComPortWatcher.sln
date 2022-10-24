@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NibblePoker.Library.ComPortHelpers", "NibblePoker.Library.ComPortHelpers\NibblePoker.Library.ComPortHelpers.csproj", "{2E9CEFC2-66A8-4A03-84FB-C28F752F522C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NibblePoker.Application.ListComPort", "NibblePoker.Application.ListComPort\NibblePoker.Application.ListComPort.csproj", "{0E6E464E-8497-4752-8281-24A64E5E8A9D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2E9CEFC2-66A8-4A03-84FB-C28F752F522C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E9CEFC2-66A8-4A03-84FB-C28F752F522C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E9CEFC2-66A8-4A03-84FB-C28F752F522C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E9CEFC2-66A8-4A03-84FB-C28F752F522C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E6E464E-8497-4752-8281-24A64E5E8A9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E6E464E-8497-4752-8281-24A64E5E8A9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E6E464E-8497-4752-8281-24A64E5E8A9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E6E464E-8497-4752-8281-24A64E5E8A9D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

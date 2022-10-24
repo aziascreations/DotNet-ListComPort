@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>NibblePoker.Application.ListComPort</RootNamespace>
+        <AssemblyName>NibblePoker.Application.ListComPort</AssemblyName>
+        <AssemblyVersion>3.0.0</AssemblyVersion>
+        <FileVersion>3.0.0</FileVersion>
+        <Version>3.0.0</Version>
+        <NeutralLanguage>en-001</NeutralLanguage>
+        <ApplicationIcon>..\lscom-v2-text-01.ico</ApplicationIcon>
+        <IsPackable>false</IsPackable>
+        <Authors>Herwin Bozet (@NibblePoker)</Authors>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\NibblePoker.Library.ComPortHelpers\NibblePoker.Library.ComPortHelpers.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="NibblePoker.Library.Arguments" Version="1.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\lscom-v2-text-01.ico">
+        <Link>lscom-v2-text-01.ico</Link>
+      </None>
+    </ItemGroup>
+
+</Project>

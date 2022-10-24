@@ -1,0 +1,13 @@
+.idea/
+Builds/
+Trash/
+
+bin/
+obj/
+
+*.exe
+*.pbd
+*.so
+*.zip
+
+notes.txt

@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>NibblePoker.Library.ComPortWatcher</RootNamespace>
+        <AssemblyName>NibblePoker.Library.ComPortHelpers</AssemblyName>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="NibblePoker.Library.RegistryHelpers" Version="0.0.1" />
+    </ItemGroup>
+
+</Project>
