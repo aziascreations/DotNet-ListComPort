@@ -1,9 +1,16 @@
 .idea/
-Builds/
+Builds/any/
+Builds/arm*/
+Builds/x*/
 Trash/
 
 bin/
 obj/
+
+NibblePoker.Packaging.ListComPort/Trash/
+NibblePoker.Packaging.ListComPort/*.msi
+NibblePoker.Packaging.ListComPort/*.wixobj
+NibblePoker.Packaging.ListComPort/*.wixpdb
 
 *.exe
 *.pbd
