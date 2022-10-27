@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+	<!-- Shared variables -->
+	<?define ProductManufacturer = "Herwin Bozet" ?>
+	<?define PackageDescription = "Installer for &quot;lscom.exe&quot;." ?>
+	<?define PackageComments = "Insert a comment here !" ?>
+	
+	<!-- TODO: Add contact, support and help fields ! -->
+	
+	<!-- Platform-dependant variables -->
+	<?if $(env.WixTargetPlatform) = x64 ?>
+		<?define Win64 = "yes" ?>
+		
+		<?define ProductName = "ListComPort (x64)" ?>
+		<?define ProductUpgradeCode = "1AB189BA-5B13-4448-A916-4E25B814D2AA" ?>
+		
+		<?define PackagePlatform = "x64" ?>
+		
+		<?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
+		<?define FilePathExecutable = "..\Builds\x64_single_sc_trim_comp\NibblePoker.Application.ListComPort.exe" ?>
+		<?define FilePathLicense = "..\LICENSE" ?>
+	<?else ?>
+		<?define Win64 = "no" ?>
+		
+		<?define ProductName = "ListComPort (x86)" ?>
+		<?define ProductUpgradeCode = "1F633E9D-7F55-449D-8BC9-56F9E72342E8" ?>
+		
+		<?define PackagePlatform = "x86" ?>
+		
+		<?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
+		<?define FilePathExecutable = "..\Builds\x86_single_sc_trim_comp\NibblePoker.Application.ListComPort.exe" ?>
+		<?define FilePathLicense = "..\LICENSE" ?>
+	<?endif ?>
+</Include>

@@ -16,5 +16,6 @@ NibblePoker.Packaging.ListComPort/*.wixpdb
 *.pbd
 *.so
 *.zip
+*.url
 
 notes.txt

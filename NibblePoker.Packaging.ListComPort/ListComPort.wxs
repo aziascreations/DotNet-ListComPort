@@ -1,21 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?include PlatformDependentVariables.wxi?>
+
+<!-- Imports shared and platform-dependant variables -->
+<?include Variables.wxi?>
+
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="$(var.PlatformProductName)" Language="1033" Version="1.0.0.0" Manufacturer="WixEdit" UpgradeCode="$(var.PlatformUpgradeCode)">
-		<Package Description="Test file in a Product" Comments="Simple test" InstallerVersion="200" Compressed="yes" Platform="x64" />
+	<!--
+	  See: https://wixtoolset.org/documentation/manual/v3/xsd/wix/product.html
+	-->
+	<Product Id="*" Name="$(var.ProductName)" Language="1033" Version="1.0.0.0"
+	         Manufacturer="$(var.ProductManufacturer)" UpgradeCode="$(var.ProductUpgradeCode)">
 		
+		<!--
+		  Package's properties as shown in Explorer, COM through the IStream interface and ???.
+		  See: https://wixtoolset.org/documentation/manual/v3/xsd/wix/package.html
+		  
+		  The "InstallerVersion" is changed from "200" to "500" since Windows Installer 5.0 and this software
+		    both require at least Windows to run.
+		  See: https://learn.microsoft.com/en-us/windows/win32/msi/released-versions-of-windows-installer
+		-->
+		<Package Description="$(var.PackageDescription)" Comments="$(var.PackageComments)"
+		         InstallerVersion="500" Compressed="yes" Platform="$(var.PackagePlatform)" />
+		
+		<!--
+		  Prevents downgrades.
+		  See: https://wixtoolset.org/documentation/manual/v3/xsd/wix/majorupgrade.html
+		-->
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 		
-		<Media Id="1" Cabinet="simple.cab" EmbedCab="yes" />
+		<Media Id="1" Cabinet="lscom.cab" EmbedCab="yes" />
 		
-		<Icon Id="Icon" SourceFile="..\lscom-v2-text-01.ico" />
+		<!--
+		  Icon used for the entry in the control panel's "Programs and Features" section.
+		  See: https://wixtoolset.org/documentation/manual/v3/xsd/wix/icon.html
+		-->
+		<Icon Id="IconMain" SourceFile="..\lscom-v2-text-01.ico" />
 		
-		<Property Id="ARPPRODUCTICON" Value="Icon" />
-		<!--<Property Id="ARPNOREPAIR" Value="yes" Secure="yes" />
-		<Property Id="ARPNOMODIFY" Value="yes" Secure="yes" />-->
+		<!--
+		  Binds the Icon "IconMain" to the aforementioned control panel's section
+		  See:
+		    * https://wixtoolset.org/documentation/manual/v3/xsd/wix/property.html
+		    * https://learn.microsoft.com/en-us/windows/win32/msi/property-table?redirectedfrom=MSDN
+		-->
+		<Property Id="ARPPRODUCTICON" Value="IconMain" />
 		
 		<WixVariable Id="WixUIBannerBmp" Value="WixUIBannerBmp.png" />
-		<WixVariable Id="WixUIDialogBmp" Value="WixUIDialogBmp_thin.png" />
+		<WixVariable Id="WixUIDialogBmp" Value="BannerSide.png" />
 		<WixVariable Id="WixUIExclamationIco" Value="WixUIExclamationIco.png" />
 		<WixVariable Id="WixUIInfoIco" Value="WixUIInfoIco.png" />
 		<WixVariable Id="WixUINewIco" Value="WixUINewIco.png" />
@@ -32,22 +61,37 @@
 		</Directory>
 		
 		<ComponentGroup Id="ProductComponentGroup">
-			<Component Id="Software" Guid="2b0b66d2-fc39-485b-baee-e5b0da8142a0" Directory="INSTALLFOLDER" Feature="DefaultFeature" Win64="$(var.Win64)">
+			<Component Id="Software" Guid="2b0b66d2-fc39-485b-baee-e5b0da8142a0" Directory="INSTALLFOLDER" Feature="FeatureExecutables" Win64="$(var.Win64)">
 				<File KeyPath="yes" Source="$(var.FilePathExecutable)" Name="lscom.exe" />
 			</Component>
-			<Component Id="Licenses" Guid="5aa34a6f-2b5c-4544-8979-a20d6c1d3f3c" Directory="LICENSESFOLDER" Feature="DefaultFeature" Win64="$(var.Win64)">
+			<Component Id="Licenses" Guid="5aa34a6f-2b5c-4544-8979-a20d6c1d3f3c" Directory="LICENSESFOLDER" Feature="FeatureLicenses" Win64="$(var.Win64)">
 				<File Source="$(var.FilePathLicense)" Name="NibblePoker.Application.ListComPort.txt" />
 				<File Source="$(var.FilePathLicense)" Name="NibblePoker.Library.Arguments.txt" />
 				<File Source="$(var.FilePathLicense)" Name="NibblePoker.Library.ComPortHelpers.txt" />
 				<File Source="$(var.FilePathLicense)" Name="NibblePoker.Library.RegistryHelpers.txt" />
 			</Component>
-			<Component Id="Registry" Guid="73b5468a-97b3-4469-a95d-70330ed229e6" Directory="INSTALLFOLDER" Feature="DefaultFeature" Win64="$(var.Win64)">
+			<Component Id="Registry" Guid="73b5468a-97b3-4469-a95d-70330ed229e6" Directory="INSTALLFOLDER" Feature="FeatureRegistryPath" Win64="$(var.Win64)">
 				<Environment Id="UpdatePath" Name="PATH" Part="last" Action="set" Permanent="yes" System="yes" Value="[INSTALLFOLDER]" />
 				<CreateFolder Directory="INSTALLFOLDER" />
 			</Component>
 		</ComponentGroup>
 		
-		<Feature Id="DefaultFeature" Title="Main Feature" Level="1" Absent="disallow"></Feature>
+		<!--
+		  Declares some features shown in the "CustomizeDlg" to which components are bound by using the feature's ID.
+		  See: https://wixtoolset.org/documentation/manual/v3/xsd/wix/feature.html
+		-->
+		<Feature Id="FeatureExecutables" Title="Executables"
+		         Description="Installs &quot;lscom.exe&quot;."
+		         Level="1" Absent="disallow">
+		</Feature>
+		<Feature Id="FeatureLicenses" Title="Licenses Files"
+		         Description="Installs required licenses files in accordance to their terms of use."
+		         Level="1" Absent="disallow">
+		</Feature>
+		<Feature Id="FeatureRegistryPath" Title="Add to PATH"
+		         Description="Allows the program to be called from a terminal by adding the installation directory to the %PATH% environment variable."
+		         Level="1" Absent="allow">
+		</Feature>
 		
 		<UI Id="UserInterface">
 			<Property Id="WIXUI_INSTALLDIR" Value="TARGETDIR" />
@@ -87,7 +131,9 @@
 			<Publish Dialog="MaintenanceTypeDlg" Control="RemoveButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
 			<Publish Dialog="MaintenanceTypeDlg" Control="Back" Event="NewDialog" Value="MaintenanceWelcomeDlg">1</Publish>
 			
-			<Publish Dialog="VerifyReadyDlg" Control="Back" Event="EndDialog" Value="Return"></Publish>
+			<Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="CustomizeDlg" Order="1">NOT Installed OR WixUI_InstallMode = "Change"</Publish>
+			<Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg" Order="2">Installed AND NOT PATCH</Publish>
+			<Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="3">Installed AND PATCH</Publish>
 		</UI>
 		<UIRef Id="WixUI_Common" />
 	</Product>

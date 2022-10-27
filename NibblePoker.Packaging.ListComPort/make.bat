@@ -1,9 +1,28 @@
 @echo off
 
-echo Executing "candle.exe"...
-"C:\Program Files (x86)\WiX Toolset v3.11\bin\candle.exe" -nologo "D:\DevelopmentNew\DotNet\ComPortWatcher\NibblePoker.Packaging.ListComPort\untitled.wxs" -out "D:\DevelopmentNew\DotNet\ComPortWatcher\NibblePoker.Packaging.ListComPort\untitled.wixobj" -ext WixUIExtension
+cd /D "%~dp0"
 
-echo Executing "light.exe"...
-"C:\Program Files (x86)\WiX Toolset v3.11\bin\light.exe" "untitled.wixobj" -out "untitled.msi" -ext WixUIExtension -cultures:en-us
+del *.msi
+del *.wixobj
+del *.wixpdb
+
+set WixTargetPlatform=x64
+
+echo Executing "candle.exe" for x64...
+"C:\Program Files (x86)\WiX Toolset v3.14\bin\candle.exe" -nologo "ListComPort.wxs" -out "ListComPort_x64.wixobj" -ext WixUIExtension
+
+echo Executing "light.exe" for x64...
+"C:\Program Files (x86)\WiX Toolset v3.14\bin\light.exe" "ListComPort_x64.wixobj" -out "ListComPort_x64.msi" -ext WixUIExtension -cultures:en-us
+
+set WixTargetPlatform=x86
+
+echo Executing "candle.exe" for x86...
+"C:\Program Files (x86)\WiX Toolset v3.14\bin\candle.exe" -nologo "ListComPort.wxs" -out "ListComPort_x86.wixobj" -ext WixUIExtension
+
+echo Executing "light.exe" for x86...
+"C:\Program Files (x86)\WiX Toolset v3.14\bin\light.exe" "ListComPort_x86.wixobj" -out "ListComPort_x86.msi" -ext WixUIExtension -cultures:en-us
+
+del *.wixobj
+del *.wixpdb
 
 pause
