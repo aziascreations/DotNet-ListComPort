@@ -91,11 +91,7 @@ You can simply clone the repository with the following command:
 git clone https://github.com/aziascreations/DotNet-ListComPort.git
 ```
 
-Once this is done, you can compile it with the following script files:
-
-| Linux                | Windows                |
-|----------------------|------------------------|
-| [build.sh](build.sh) | [build.bat](build.bat) |
+Once this is done, you can compile it with the [compile.bat](compile.bat) script file.
 
 Finally, you should be able to find the executables in the "[Builds](Builds/)" folder.
 

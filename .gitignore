@@ -11,6 +11,7 @@ NibblePoker.Packaging.ListComPort/Trash/
 NibblePoker.Packaging.ListComPort/*.msi
 NibblePoker.Packaging.ListComPort/*.wixobj
 NibblePoker.Packaging.ListComPort/*.wixpdb
+NibblePoker.Packaging.ListComPort/*.bat
 
 *.exe
 *.pbd
