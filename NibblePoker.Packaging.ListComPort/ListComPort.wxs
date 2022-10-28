@@ -43,12 +43,30 @@
 		-->
 		<Property Id="ARPPRODUCTICON" Value="IconMain" />
 		
+		<!--
+		  Images used in the installer as the top and side banner.
+		-->
 		<WixVariable Id="WixUIBannerBmp" Value="WixUIBannerBmp.png" />
 		<WixVariable Id="WixUIDialogBmp" Value="BannerSide.png" />
+		
+		<!--
+		  Images that should be used in as some icons.
+		  IDK where they should show up tho.
+		-->
 		<WixVariable Id="WixUIExclamationIco" Value="WixUIExclamationIco.png" />
 		<WixVariable Id="WixUIInfoIco" Value="WixUIInfoIco.png" />
 		<WixVariable Id="WixUINewIco" Value="WixUINewIco.png" />
 		<WixVariable Id="WixUIUpIco" Value="WixUIUpIco.png" />
+		
+		<!--
+		  License files and MS privacy notice.
+		  MIT licenses aren't included as they don't act as EULA.
+		  The "WixUILicenseRtf" variable is used by the standard "LicenseAgreementDlg".
+		-->
+		<WixVariable Id="WixUILicenseMicrosoftDotNetRtf" Value="Licenses\License_Microsoft_DotNet.rtf" />
+		<WixVariable Id="WixUILicenseMicrosoftVisualStudioRtf" Value="Licenses\License_Microsoft_VisualStudio.rtf" />
+		<WixVariable Id="WixUILicenseMicrosoftWindowsSdkRtf" Value="Licenses\License_WindowsSDK.rtf" />
+		<WixVariable Id="WixUILicenseMicrosoftPrivacyNoticeRtf" Value="Licenses\PrivacyNotice_Microsoft_2022-09.rtf" />
 		
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="$(var.PlatformProgramFilesFolder)" Name="PFiles">
@@ -65,10 +83,12 @@
 				<File KeyPath="yes" Source="$(var.FilePathExecutable)" Name="lscom.exe" />
 			</Component>
 			<Component Id="Licenses" Guid="5aa34a6f-2b5c-4544-8979-a20d6c1d3f3c" Directory="LICENSESFOLDER" Feature="FeatureLicenses" Win64="$(var.Win64)">
-				<File Source="$(var.FilePathLicense)" Name="NibblePoker.Application.ListComPort.txt" />
-				<File Source="$(var.FilePathLicense)" Name="NibblePoker.Library.Arguments.txt" />
-				<File Source="$(var.FilePathLicense)" Name="NibblePoker.Library.ComPortHelpers.txt" />
-				<File Source="$(var.FilePathLicense)" Name="NibblePoker.Library.RegistryHelpers.txt" />
+				<File Source="Licenses\License_DotNetCore.rtf" Name="License_DotNetCore.rtf" />
+				<File Source="Licenses\License_Microsoft_DotNet.rtf" Name="License_Microsoft_DotNet.rtf" />
+				<File Source="Licenses\License_Microsoft_VisualStudio.rtf" Name="License_Microsoft_VisualStudio.rtf" />
+				<File Source="Licenses\License_NibblePoker.rtf" Name="License_NibblePoker.rtf" />
+				<File Source="Licenses\License_WindowsSDK.rtf" Name="License_WindowsSDK.rtf" />
+				<File Source="Licenses\PrivacyNotice_Microsoft_2022-09.rtf" Name="PrivacyNotice_Microsoft_2022-09.rtf" />
 			</Component>
 			<Component Id="Registry" Guid="73b5468a-97b3-4469-a95d-70330ed229e6" Directory="INSTALLFOLDER" Feature="FeatureRegistryPath" Win64="$(var.Win64)">
 				<Environment Id="UpdatePath" Name="PATH" Part="last" Action="set" Permanent="yes" System="yes" Value="[INSTALLFOLDER]" />
@@ -85,13 +105,105 @@
 		         Level="1" Absent="disallow">
 		</Feature>
 		<Feature Id="FeatureLicenses" Title="Licenses Files"
-		         Description="Installs required licenses files in accordance to their terms of use."
+		         Description="Installs the licenses files and Microsoft's privacy notice."
 		         Level="1" Absent="disallow">
 		</Feature>
 		<Feature Id="FeatureRegistryPath" Title="Add to PATH"
 		         Description="Allows the program to be called from a terminal by adding the installation directory to the %PATH% environment variable."
 		         Level="1" Absent="allow">
 		</Feature>
+		
+		<!--
+		  Dialog for Microsoft's Privacy notice.
+		-->
+		<UI>
+			<Dialog Id="LicenseMicrosoftDotNetDlg" Width="370" Height="270" Title="!(loc.LicenseAgreementDlg_Title)">
+				<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="!(loc.LicenseAgreementDlgBannerBitmap)" />
+				<Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+				<Control Id="Description" Type="Text" X="25" Y="23" Width="340" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.LicenseAgreementDlgDescription)" />
+				<Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.LicenseAgreementDlgTitle)" />
+				<Control Id="Print" Type="PushButton" X="112" Y="243" Width="56" Height="17" Text="!(loc.WixUIPrint)">
+					<Publish Event="DoAction" Value="WixUIPrintEula">1</Publish>
+				</Control>
+				<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
+				<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)">
+					<Publish Event="SpawnWaitDialog" Value="WaitForCostingDlg">!(wix.WixUICostingPopupOptOut) OR CostingComplete = 1</Publish>
+				</Control>
+				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+					<Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+				</Control>
+				<Control Id="LicenseText" Type="ScrollableText" X="20" Y="60" Width="330" Height="160" Sunken="yes" TabSkip="no">
+					<Text SourceFile="!(wix.WixUILicenseMicrosoftDotNetRtf)" />
+				</Control>
+			</Dialog>
+			
+			<Dialog Id="LicenseMicrosoftVisualStudioDlg" Width="370" Height="270" Title="!(loc.LicenseAgreementDlg_Title)">
+				<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="!(loc.LicenseAgreementDlgBannerBitmap)" />
+				<Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+				<Control Id="Description" Type="Text" X="25" Y="23" Width="340" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.LicenseAgreementDlgDescription)" />
+				<Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.LicenseAgreementDlgTitle)" />
+				<Control Id="Print" Type="PushButton" X="112" Y="243" Width="56" Height="17" Text="!(loc.WixUIPrint)">
+					<Publish Event="DoAction" Value="WixUIPrintEula">1</Publish>
+				</Control>
+				<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
+				<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)">
+					<Publish Event="SpawnWaitDialog" Value="WaitForCostingDlg">!(wix.WixUICostingPopupOptOut) OR CostingComplete = 1</Publish>
+				</Control>
+				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+					<Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+				</Control>
+				<Control Id="LicenseText" Type="ScrollableText" X="20" Y="60" Width="330" Height="160" Sunken="yes" TabSkip="no">
+					<Text SourceFile="!(wix.WixUILicenseMicrosoftVisualStudioRtf)" />
+				</Control>
+			</Dialog>
+			
+			<Dialog Id="LicenseMicrosoftWindowsSdkDlg" Width="370" Height="270" Title="!(loc.LicenseAgreementDlg_Title)">
+				<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="!(loc.LicenseAgreementDlgBannerBitmap)" />
+				<Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+				<Control Id="Description" Type="Text" X="25" Y="23" Width="340" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.LicenseAgreementDlgDescription)" />
+				<Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.LicenseAgreementDlgTitle)" />
+				<Control Id="Print" Type="PushButton" X="112" Y="243" Width="56" Height="17" Text="!(loc.WixUIPrint)">
+					<Publish Event="DoAction" Value="WixUIPrintEula">1</Publish>
+				</Control>
+				<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
+				<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)">
+					<Publish Event="SpawnWaitDialog" Value="WaitForCostingDlg">!(wix.WixUICostingPopupOptOut) OR CostingComplete = 1</Publish>
+				</Control>
+				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+					<Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+				</Control>
+				<Control Id="LicenseText" Type="ScrollableText" X="20" Y="60" Width="330" Height="160" Sunken="yes" TabSkip="no">
+					<Text SourceFile="!(wix.WixUILicenseMicrosoftWindowsSdkRtf)" />
+				</Control>
+			</Dialog>
+			
+			<Dialog Id="LicenseMicrosoftPrivacyNoticeDlg" Width="370" Height="270" Title="!(loc.LicenseAgreementDlg_Title)">
+				<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="!(loc.LicenseAgreementDlgBannerBitmap)" />
+				<Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+				<Control Id="Description" Type="Text" X="25" Y="23" Width="340" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.LicenseAgreementDlgDescription)" />
+				<Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.LicenseAgreementDlgTitle)" />
+				<Control Id="LicenseAcceptedCheckBox" Type="CheckBox" X="20" Y="207" Width="330" Height="18" CheckBoxValue="1" Property="LicenseAccepted" Text="!(loc.LicenseAgreementDlgLicenseAcceptedCheckBox)" />
+				<Control Id="Print" Type="PushButton" X="112" Y="243" Width="56" Height="17" Text="!(loc.WixUIPrint)">
+					<Publish Event="DoAction" Value="WixUIPrintEula">1</Publish>
+				</Control>
+				<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
+				<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)">
+					<Publish Event="SpawnWaitDialog" Value="WaitForCostingDlg">!(wix.WixUICostingPopupOptOut) OR CostingComplete = 1</Publish>
+					<Condition Action="disable"><![CDATA[LicenseAccepted <> "1"]]></Condition>
+					<Condition Action="enable">LicenseAccepted = "1"</Condition>
+				</Control>
+				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+					<Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+				</Control>
+				<Control Id="LicenseText" Type="ScrollableText" X="20" Y="60" Width="330" Height="140" Sunken="yes" TabSkip="no">
+					<Text SourceFile="!(wix.WixUILicenseMicrosoftPrivacyNoticeRtf)" />
+				</Control>
+			</Dialog>
+		</UI>
 		
 		<UI Id="UserInterface">
 			<Property Id="WIXUI_INSTALLDIR" Value="TARGETDIR" />
@@ -111,17 +223,24 @@
 			<DialogRef Id="PrepareDlg" />
 			<DialogRef Id="UserExit" />
 			
-			<!-- https://qiita.com/tohshima/items/2253710cf82be9a2d386 -->
-			
 			<Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999">1</Publish>
 			
-			<!-- Welcome -> end message -> install on exit -> install -> end message -->
-			<!--<Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="ExitDialog">NOT Installed</Publish>-->
+			<Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="LicenseMicrosoftDotNetDlg"></Publish>
 			
-			<!-- Welcome -> end dialog -> install -> end message -->
-			<Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="CustomizeDlg"></Publish>
+			<Publish Dialog="LicenseMicrosoftDotNetDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg">1</Publish>
+			<Publish Dialog="LicenseMicrosoftDotNetDlg" Control="Next" Event="NewDialog" Value="LicenseMicrosoftVisualStudioDlg">1</Publish>
 			
-			<Publish Dialog="CustomizeDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg"></Publish>
+			<Publish Dialog="LicenseMicrosoftVisualStudioDlg" Control="Back" Event="NewDialog" Value="LicenseMicrosoftDotNetDlg">1</Publish>
+			<Publish Dialog="LicenseMicrosoftVisualStudioDlg" Control="Next" Event="NewDialog" Value="LicenseMicrosoftWindowsSdkDlg">1</Publish>
+			
+			<Publish Dialog="LicenseMicrosoftWindowsSdkDlg" Control="Back" Event="NewDialog" Value="LicenseMicrosoftVisualStudioDlg">1</Publish>
+			<Publish Dialog="LicenseMicrosoftWindowsSdkDlg" Control="Next" Event="NewDialog" Value="LicenseMicrosoftPrivacyNoticeDlg">1</Publish>
+			
+			<Publish Dialog="LicenseMicrosoftPrivacyNoticeDlg" Control="Back" Event="NewDialog" Value="LicenseMicrosoftWindowsSdkDlg">1</Publish>
+			<Publish Dialog="LicenseMicrosoftPrivacyNoticeDlg" Control="Next" Event="NewDialog" Value="CustomizeDlg">LicenseAccepted = "1"</Publish>
+			
+			<Publish Dialog="CustomizeDlg" Control="Back" Event="NewDialog" Value="LicenseMicrosoftPrivacyNoticeDlg" Order="1">NOT Installed OR PATCH</Publish>
+			<Publish Dialog="CustomizeDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg" Order="2">Installed OR WixUI_InstallMode = "Change"</Publish>
 			<Publish Dialog="CustomizeDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg"></Publish>
 			
 			<Publish Dialog="MaintenanceWelcomeDlg" Control="Next" Event="NewDialog" Value="MaintenanceTypeDlg">1</Publish>
