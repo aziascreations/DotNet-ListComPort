@@ -170,22 +170,11 @@ goto end
 
 :packages
 echo Removing old final distributable packages...
-del Packages\*.msi >nul 2>&1
-del Packages\*.exe >nul 2>&1
-rmdir /Q /S Packages\any
-rmdir /Q /S Packages\x86_DotNet6
-rmdir /Q /S Packages\x86_SelfContained
-rmdir /Q /S Packages\x64_DotNet6
-rmdir /Q /S Packages\x64_SelfContained
-rmdir /Q /S Packages\arm_DotNet6
-rmdir /Q /S Packages\arm_SelfContained
-rmdir /Q /S Packages\arm64_DotNet6
-rmdir /Q /S Packages\arm64_SelfContained
-rmdir /Q /S Packages\licenses_Others
-rmdir /Q /S Packages\licenses_SelfContained
+rmdir /Q /S Packages 2>nul
 echo.
 
 echo Preparing folders...
+mkdir Packages
 mkdir Packages\any
 mkdir Packages\x86_DotNet6
 mkdir Packages\x86_SelfContained
@@ -196,13 +185,15 @@ mkdir Packages\arm_SelfContained
 mkdir Packages\arm64_DotNet6
 mkdir Packages\arm64_SelfContained
 mkdir Packages\licenses_Others
+mkdir Packages\licenses_Others\Licenses
 mkdir Packages\licenses_SelfContained
+mkdir Packages\licenses_SelfContained\Licenses
 echo.
 
 echo Copying final distributable files...
-xcopy /E /v NibblePoker.Packaging.ListComPort\Licenses Packages\licenses_SelfContained
-del Packages\licenses_SelfContained\*.rtf
-copy Packages\licenses_SelfContained\License_NibblePoker.pdf Packages\licenses_Others\License_NibblePoker.pdf
+xcopy /E /v NibblePoker.Packaging.ListComPort\Licenses Packages\licenses_SelfContained\Licenses
+del Packages\licenses_SelfContained\Licenses\*.rtf
+copy Packages\licenses_SelfContained\Licenses\License_NibblePoker.pdf Packages\licenses_Others\Licenses\License_NibblePoker.pdf
 
 xcopy /E /v Builds\any Packages\any
 del Packages\any\*.pdb
@@ -223,7 +214,21 @@ copy /B /V Builds\arm64_single\NibblePoker.Application.ListComPort.exe Packages\
 copy /B /V Builds\arm64_single_sc_trim_comp\NibblePoker.Application.ListComPort.exe Packages\arm64_SelfContained\lscom.exe
 echo.
 
+echo Renaming some files...
+:: TODO: For the any build !
+echo.
+
 echo Creating final distributable packages...
+7z a -mx9 "./Packages/ListComPort_AnyCPU.zip" ./Packages/any/* ./Packages/licenses_Others/* > nul
+7z a -mx9 "./Packages/ListComPort_x86_Single.zip" ./Packages/x86_DotNet6/* ./Packages/licenses_Others/* > nul
+7z a -mx9 "./Packages/ListComPort_x86_SelfContained.zip" ./Packages/x86_SelfContained/* ./Packages/licenses_SelfContained/* > nul
+7z a -mx9 "./Packages/ListComPort_x64_Single.zip" ./Packages/x64_DotNet6/* ./Packages/licenses_Others/* > nul
+7z a -mx9 "./Packages/ListComPort_x64_SelfContained.zip" ./Packages/x64_SelfContained/* ./Packages/licenses_SelfContained/* > nul
+7z a -mx9 "./Packages/ListComPort_arm_Single.zip" ./Packages/arm_DotNet6/* ./Packages/licenses_Others/* > nul
+7z a -mx9 "./Packages/ListComPort_arm_SelfContained.zip" ./Packages/arm_SelfContained/* ./Packages/licenses_SelfContained/* > nul
+7z a -mx9 "./Packages/ListComPort_arm64_Single.zip" ./Packages/arm64_DotNet6/* ./Packages/licenses_Others/* > nul
+7z a -mx9 "./Packages/ListComPort_arm64_SelfContained.zip" ./Packages/arm64_SelfContained/* ./Packages/licenses_SelfContained/* > nul
+
 echo.
 
 goto end-success
