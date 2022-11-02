@@ -13,6 +13,11 @@ NibblePoker.Packaging.ListComPort/*.wixobj
 NibblePoker.Packaging.ListComPort/*.wixpdb
 NibblePoker.Packaging.ListComPort/*.bat
 
+Packages/*/
+Packages/*.msi
+Packages/*.zip
+Packages/*.7z
+
 *.exe
 *.pbd
 *.so

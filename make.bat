@@ -7,6 +7,7 @@ cd /D "%~dp0"
 :: User-configurable %PATH% entries.
 set PATH_MAKEAPPX=C:\Program Files (x86)\Windows Kits\10\App Certification Kit\
 set PATH_WIX=C:\Program Files (x86)\WiX Toolset v3.14\bin\
+set PATH_7ZIP=C:\Program Files\7-Zip\7z.exe
 
 :: Defining the %NP_ESC% variable for later use.
 for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1) do rem"') do (
@@ -36,11 +37,19 @@ if %NP_IS_WIX_VALID% neq true (
 	echo.         We will attempt to use the predefined one present at the top of "make.bat"...
 	echo.
 	set "PATH=%PATH%;%PATH_WIX%"
+	set NP_REDO_PATH_CHECK=true
+)
+
+if %NP_PATH_7ZIP% neq true (
+	echo %NP_ESC%[33mWARNING:%NP_ESC%[0m Unable to find the 7-Zip in your %%PATH%% !
+	echo.         We will attempt to use the predefined one present at the top of "make.bat"...
+	set "PATH=%PATH%;%PATH_7ZIP%"
+	set NP_REDO_PATH_CHECK=true
 )
 
 :: TODO: MakeAppx !
 
-if %NP_REDO_PATH_CHECK% equ true (
+if %NP_REDO_PATH_CHECK% neq true (
 	goto build-start
 )
 
@@ -55,6 +64,14 @@ if %NP_IS_WIX_VALID% neq true (
 	echo.             You need to download Wix Toolset 3.14+ from one of these links:
 	echo.               https://wixtoolset.org/releases/
 	echo.               https://wixtoolset.org/releases/development/
+	echo.
+	goto end
+)
+
+if %NP_PATH_7ZIP% neq true (
+	echo %NP_ESC%[31mFATAL ERROR:%NP_ESC%[0m Unable to find the 7-Zip in your %%PATH%% !
+	echo.             You need to download it from their website:
+	echo.               https://www.7-zip.org/
 	echo.
 	goto end
 )
@@ -142,13 +159,74 @@ cd ..
 
 :: TODO: Packages
 
-goto end-success
+goto packages
 
 
 :end-msi-error
 cd ..
 
 goto end
+
+
+:packages
+echo Removing old final distributable packages...
+del Packages\*.msi >nul 2>&1
+del Packages\*.exe >nul 2>&1
+rmdir /Q /S Packages\any
+rmdir /Q /S Packages\x86_DotNet6
+rmdir /Q /S Packages\x86_SelfContained
+rmdir /Q /S Packages\x64_DotNet6
+rmdir /Q /S Packages\x64_SelfContained
+rmdir /Q /S Packages\arm_DotNet6
+rmdir /Q /S Packages\arm_SelfContained
+rmdir /Q /S Packages\arm64_DotNet6
+rmdir /Q /S Packages\arm64_SelfContained
+rmdir /Q /S Packages\licenses_Others
+rmdir /Q /S Packages\licenses_SelfContained
+echo.
+
+echo Preparing folders...
+mkdir Packages\any
+mkdir Packages\x86_DotNet6
+mkdir Packages\x86_SelfContained
+mkdir Packages\x64_DotNet6
+mkdir Packages\x64_SelfContained
+mkdir Packages\arm_DotNet6
+mkdir Packages\arm_SelfContained
+mkdir Packages\arm64_DotNet6
+mkdir Packages\arm64_SelfContained
+mkdir Packages\licenses_Others
+mkdir Packages\licenses_SelfContained
+echo.
+
+echo Copying final distributable files...
+xcopy /E /v NibblePoker.Packaging.ListComPort\Licenses Packages\licenses_SelfContained
+del Packages\licenses_SelfContained\*.rtf
+copy Packages\licenses_SelfContained\License_NibblePoker.pdf Packages\licenses_Others\License_NibblePoker.pdf
+
+xcopy /E /v Builds\any Packages\any
+del Packages\any\*.pdb
+
+copy /B /V NibblePoker.Packaging.ListComPort\ListComPort_x86.msi Packages\ListComPort_x86.msi
+copy /B /V NibblePoker.Packaging.ListComPort\ListComPort_x64.msi Packages\ListComPort_x64.msi
+
+copy /B /V Builds\x86_single\NibblePoker.Application.ListComPort.exe Packages\x86_DotNet6\lscom.exe
+copy /B /V Builds\x86_single_sc_trim_comp\NibblePoker.Application.ListComPort.exe Packages\x86_SelfContained\lscom.exe
+
+copy /B /V Builds\x64_single\NibblePoker.Application.ListComPort.exe Packages\x64_DotNet6\lscom.exe
+copy /B /V Builds\x64_single_sc_trim_comp\NibblePoker.Application.ListComPort.exe Packages\x64_SelfContained\lscom.exe
+
+copy /B /V Builds\arm_single\NibblePoker.Application.ListComPort.exe Packages\arm_DotNet6\lscom.exe
+copy /B /V Builds\arm_single_sc_trim_comp\NibblePoker.Application.ListComPort.exe Packages\arm_SelfContained\lscom.exe
+
+copy /B /V Builds\arm64_single\NibblePoker.Application.ListComPort.exe Packages\arm64_DotNet6\lscom.exe
+copy /B /V Builds\arm64_single_sc_trim_comp\NibblePoker.Application.ListComPort.exe Packages\arm64_SelfContained\lscom.exe
+echo.
+
+echo Creating final distributable packages...
+echo.
+
+goto end-success
 
 
 :verify-path
@@ -158,6 +236,7 @@ set NP_PATH_DOTNET=false
 set NP_PATH_MAKEAPPX=false
 set NP_PATH_WIXLIGHT=false
 set NP_PATH_WIXCANDLE=false
+set NP_PATH_7ZIP=false
 
 where /q dotnet
 if ERRORLEVEL 1 (
@@ -191,6 +270,14 @@ if ERRORLEVEL 1 (
 	set NP_PATH_WIXLIGHT=true
 )
 
+where /q 7z
+if ERRORLEVEL 1 (
+	echo. * 7-Zip Archiver:     %NP_ESC%[31mNOT FOUND !%NP_ESC%[0m
+) else (
+	echo. * 7-Zip Archiver:     %NP_ESC%[32mFOUND !%NP_ESC%[0m
+	set NP_PATH_7ZIP=true
+)
+
 echo.
 
 exit /b
@@ -204,11 +291,16 @@ goto end
 :end
 set PATH=%PATH_ORIGINAL%
 
+set PATH_MAKEAPPX=
+set PATH_WIX=
+set PATH_7ZIP=
+set PATH_ORIGINAL=
 set NP_ESC=
 set NP_PATH_DOTNET=
 set NP_PATH_MAKEAPPX=
 set NP_PATH_WIXCANDLE=
 set NP_PATH_WIXLIGHT=
+set NP_PATH_7ZIP=
 set NP_IS_WIX_VALID=
 set NP_REDO_PATH_CHECK=
 set WixTargetPlatform=
