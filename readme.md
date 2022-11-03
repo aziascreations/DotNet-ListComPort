@@ -20,7 +20,8 @@ The latest releases can be found here: "*[Release page](https://github.com/azias
 * Switched from *PureBasic* to *.NET 6.0*.
 * Improved **a lot** of the program's logic.
 * Added the `-h`/`--short-help`.
-* Added support for Windows ARM & ARM64
+* Added support for Windows ARM & ARM64.
+* Support for running without a console. (See [remarks](#remarks) #3)
 
 ## Usage
 ```
@@ -47,6 +48,7 @@ Launch arguments:
 ## Remarks
 * If '-d' or '-f' is used, the raw name will not be shown unless '-n' is used.
 * If '-D', '-t' or '-p' are used, the special separator between the raw and friendly name and the square brackets are not shown.
+* If the program is raw without going through a console, the options '-n' and '-f' will be used
 * By default, the ports are sorted in the order they are provided by the registry, which is often chronological.
 * The 'raw name' refers to a port name. (e.g.: COM1, COM2, ...)
 * The 'device name' refers to a port device path. (e.g.: \Device\Serial1, ...)
@@ -91,9 +93,14 @@ You can simply clone the repository with the following command:
 git clone https://github.com/aziascreations/DotNet-ListComPort.git
 ```
 
-Once this is done, you can compile it with the [compile.bat](compile.bat) script file.
+Once this is done, you can compile it with the [make.bat](make.bat) script file.
 
-Finally, you should be able to find the executables in the "[Builds](Builds/)" folder.
+Please note that you may need to have to edit your `PATH` or the aforementioned script
+so that 7-Zip and Wix Toolset v3.14 can be used by it.
+
+Finally, you should be able to find the executables in the "[Builds](Builds/)" folder,
+and the distributable packages in the "[Packages](Packages/)" folder.
+
 
 ## License
 This project and all the libraries it uses are licensed under the [MIT](LICENSE) license.

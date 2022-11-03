@@ -4,7 +4,7 @@ using NibblePoker.Library.ComPortWatcher;
 namespace NibblePoker.Application.ListComPort;
 
 internal static class Program {
-	private const string Version = "3.0.0-indev";
+	private const string Version = "3.0.0";
 	
 	private static readonly Verb RootVerb = new Verb("");
 	
@@ -32,6 +32,15 @@ internal static class Program {
 	
 	private static int _exitCode = ErrorCodes.NoError;
 	
+	/// <summary>
+	/// Checks if the program is the only owner of its console.
+	/// This check is used to detect if the program was run from the exe/lnk or via a console.
+	/// </summary>
+	/// <returns><c>True</c> if the process is the console's sole owner, <c>False</c> otherwise</returns>
+	private static bool IsProgramRunDirectly() {
+		return GetConsoleProcessList(new int[2], 2) <= 1;
+	}
+	
 	private static int Main(string[] args) {
 		try {
 			ArgumentsParser.ParseArguments(RootVerb.RegisterOption(OptionShowAll).RegisterOption(OptionShowDevice)
@@ -52,6 +61,7 @@ internal static class Program {
 				Console.WriteLine("\nRemarks:");
 				Console.WriteLine(" * If '-d' or '-f' is used, the raw name will not be shown unless '-n' is used.");
 				Console.WriteLine(" * If '-D', '-t' or '-p' are used, the special separator between the raw and friendly name and the square brackets are not shown.");
+				Console.WriteLine(" * If the program is raw without going through a console, the options '-n' and '-f' will be used.");
 				Console.WriteLine(" * By default, the ports are sorted in the order they are provided by the registry, which is often chronological.");
 				Console.WriteLine(" * The 'raw name' refers to a port name. (e.g.: COM1, COM2, ...)");
 				Console.WriteLine(" * The 'device name' refers to a port device path. (e.g.: \\Device\\Serial1, ...)");
@@ -90,12 +100,12 @@ internal static class Program {
 			_shouldPrintDeviceNames = true;
 		}
 		
-		if(OptionShowFriendly.WasUsed()) {
+		if(OptionShowFriendly.WasUsed() || IsProgramRunDirectly()) {
 			_shouldPrintRawNames = false;
 			_shouldPrintFriendlyNames = true;
 		}
 		
-		if(OptionShowNameRaw.WasUsed()) {
+		if(OptionShowNameRaw.WasUsed() || IsProgramRunDirectly()) {
 			_shouldPrintRawNames = true;
 		}
 		
@@ -178,6 +188,17 @@ internal static class Program {
 			_exitCode = ErrorCodes.NoComPorts;
 		}
 		
+		// Allows the program to be ran from a shortcut without closing the console instantly.
+		if(IsProgramRunDirectly()) {
+			Console.Write("\nPress any key to continue...");
+			Console.ReadKey();
+		}
+		
 		return _exitCode;
 	}
+	
+	// Imports "GetConsoleProcessList(...)" in order to know if the program was ran via a shortcut or CLI.
+	// See: https://learn.microsoft.com/en-us/windows/console/getconsoleprocesslist
+	[System.Runtime.InteropServices.DllImport("kernel32.dll")]
+	private static extern int GetConsoleProcessList(int[] buffer, int size);
 }

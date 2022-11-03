@@ -2,8 +2,8 @@
 <Include>
 	<!-- Shared variables -->
 	<?define ProductManufacturer = "Herwin Bozet" ?>
-	<?define PackageDescription = "Installer for &quot;lscom.exe&quot;." ?>
-	<?define PackageComments = "Insert a comment here !" ?>
+	<?define PackageDescription = "ListComPort / lscom" ?> <!-- Also reffered to as 'Subject' ! -->
+	<?define PackageComments = "This installer database contains the logic and data required to install ListComPort." ?>
 	
 	<!-- TODO: Add contact, support and help fields ! -->
 	

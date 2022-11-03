@@ -7,7 +7,7 @@
 	<!--
 	  See: https://wixtoolset.org/documentation/manual/v3/xsd/wix/product.html
 	-->
-	<Product Id="*" Name="$(var.ProductName)" Language="1033" Version="1.0.0.0"
+	<Product Id="*" Name="$(var.ProductName)" Language="1033" Version="3.0.0.0"
 	         Manufacturer="$(var.ProductManufacturer)" UpgradeCode="$(var.ProductUpgradeCode)">
 		
 		<!--
@@ -83,12 +83,12 @@
 				<File KeyPath="yes" Source="$(var.FilePathExecutable)" Name="lscom.exe" />
 			</Component>
 			<Component Id="Licenses" Guid="5aa34a6f-2b5c-4544-8979-a20d6c1d3f3c" Directory="LICENSESFOLDER" Feature="FeatureLicenses" Win64="$(var.Win64)">
-				<File Source="Licenses\License_DotNetCore.rtf" Name="License_DotNetCore.rtf" />
-				<File Source="Licenses\License_Microsoft_DotNet.rtf" Name="License_Microsoft_DotNet.rtf" />
-				<File Source="Licenses\License_Microsoft_VisualStudio.rtf" Name="License_Microsoft_VisualStudio.rtf" />
-				<File Source="Licenses\License_NibblePoker.rtf" Name="License_NibblePoker.rtf" />
-				<File Source="Licenses\License_WindowsSDK.rtf" Name="License_WindowsSDK.rtf" />
-				<File Source="Licenses\PrivacyNotice_Microsoft_2022-09.rtf" Name="PrivacyNotice_Microsoft_2022-09.rtf" />
+				<File Source="Licenses\License_DotNetCore.pdf" Name="License_DotNetCore.pdf" />
+				<File Source="Licenses\License_Microsoft_DotNet.pdf" Name="License_Microsoft_DotNet.pdf" />
+				<File Source="Licenses\License_Microsoft_VisualStudio.pdf" Name="License_Microsoft_VisualStudio.pdf" />
+				<File Source="Licenses\License_NibblePoker.pdf" Name="License_NibblePoker.pdf" />
+				<File Source="Licenses\License_WindowsSDK.pdf" Name="License_WindowsSDK.pdf" />
+				<File Source="Licenses\PrivacyNotice_Microsoft_2022-09.pdf" Name="PrivacyNotice_Microsoft_2022-09.pdf" />
 			</Component>
 			<Component Id="Registry" Guid="73b5468a-97b3-4469-a95d-70330ed229e6" Directory="INSTALLFOLDER" Feature="FeatureRegistryPath" Win64="$(var.Win64)">
 				<Environment Id="UpdatePath" Name="PATH" Part="last" Action="set" Permanent="yes" System="yes" Value="[INSTALLFOLDER]" />
