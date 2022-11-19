@@ -9,6 +9,9 @@ set PATH_MAKEAPPX=C:\Program Files (x86)\Windows Kits\10\App Certification Kit\
 set PATH_WIX=C:\Program Files (x86)\WiX Toolset v3.14\bin\
 set PATH_7ZIP=C:\Program Files\7-Zip\7z.exe
 
+:: Setting some naming constants
+set NP_LSCOM_VERSION=3.0.0
+
 :: Defining the %NP_ESC% variable for later use.
 for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1) do rem"') do (
   set NP_ESC=%%b
@@ -130,7 +133,7 @@ if ERRORLEVEL 1 (
 	echo.
 	goto end-msi-error
 )
-light ListComPort_x64.wixobj -out ListComPort_x64.msi -ext WixUIExtension -cultures:en-us
+light ListComPort_x64.wixobj -loc en-us.wxl -out ListComPort_x64.msi -ext WixUIExtension -cultures:en-us
 if ERRORLEVEL 1 (
 	echo.
 	echo %NP_ESC%[31mFATAL ERROR:%NP_ESC%[0m Failed to link and create the final MSI package !
@@ -147,7 +150,7 @@ if ERRORLEVEL 1 (
 	echo.
 	goto end-msi-error
 )
-light ListComPort_x86.wixobj -out ListComPort_x86.msi -ext WixUIExtension -cultures:en-us
+light ListComPort_x86.wixobj -loc en-us.wxl -out ListComPort_x86.msi -ext WixUIExtension -cultures:en-us
 if ERRORLEVEL 1 (
 	echo.
 	echo %NP_ESC%[31mFATAL ERROR:%NP_ESC%[0m Failed to link and create the final MSI package !
@@ -198,8 +201,8 @@ copy Packages\licenses_SelfContained\Licenses\License_NibblePoker.pdf Packages\l
 xcopy /E /v Builds\any Packages\any
 del Packages\any\*.pdb
 
-copy /B /V NibblePoker.Packaging.ListComPort\ListComPort_x86.msi Packages\ListComPort_x86.msi
-copy /B /V NibblePoker.Packaging.ListComPort\ListComPort_x64.msi Packages\ListComPort_x64.msi
+copy /B /V NibblePoker.Packaging.ListComPort\ListComPort_x86.msi Packages\ListComPort_v%NP_LSCOM_VERSION%_x86.msi
+copy /B /V NibblePoker.Packaging.ListComPort\ListComPort_x64.msi Packages\ListComPort_v%NP_LSCOM_VERSION%_x64.msi
 
 copy /B /V Builds\x86_single\NibblePoker.Application.ListComPort.exe Packages\x86_DotNet6\lscom.exe
 copy /B /V Builds\x86_single_sc_trim_comp\NibblePoker.Application.ListComPort.exe Packages\x86_SelfContained\lscom.exe
@@ -215,19 +218,19 @@ copy /B /V Builds\arm64_single_sc_trim_comp\NibblePoker.Application.ListComPort.
 echo.
 
 echo Renaming some files...
-:: TODO: For the any build !
+ren Packages\any\NibblePoker.Application.ListComPort.exe lscom.exe
 echo.
 
 echo Creating final distributable packages...
-7z a -mx9 "./Packages/ListComPort_AnyCPU.zip" ./Packages/any/* ./Packages/licenses_Others/* > nul
-7z a -mx9 "./Packages/ListComPort_x86_Single.zip" ./Packages/x86_DotNet6/* ./Packages/licenses_Others/* > nul
-7z a -mx9 "./Packages/ListComPort_x86_SelfContained.zip" ./Packages/x86_SelfContained/* ./Packages/licenses_SelfContained/* > nul
-7z a -mx9 "./Packages/ListComPort_x64_Single.zip" ./Packages/x64_DotNet6/* ./Packages/licenses_Others/* > nul
-7z a -mx9 "./Packages/ListComPort_x64_SelfContained.zip" ./Packages/x64_SelfContained/* ./Packages/licenses_SelfContained/* > nul
-7z a -mx9 "./Packages/ListComPort_arm_Single.zip" ./Packages/arm_DotNet6/* ./Packages/licenses_Others/* > nul
-7z a -mx9 "./Packages/ListComPort_arm_SelfContained.zip" ./Packages/arm_SelfContained/* ./Packages/licenses_SelfContained/* > nul
-7z a -mx9 "./Packages/ListComPort_arm64_Single.zip" ./Packages/arm64_DotNet6/* ./Packages/licenses_Others/* > nul
-7z a -mx9 "./Packages/ListComPort_arm64_SelfContained.zip" ./Packages/arm64_SelfContained/* ./Packages/licenses_SelfContained/* > nul
+7z a -mx9 "./Packages/ListComPort_v%NP_LSCOM_VERSION%_AnyCPU.zip" ./Packages/any/* ./Packages/licenses_Others/* > nul
+7z a -mx9 "./Packages/ListComPort_v%NP_LSCOM_VERSION%_x86_Single.zip" ./Packages/x86_DotNet6/* ./Packages/licenses_Others/* > nul
+7z a -mx9 "./Packages/ListComPort_v%NP_LSCOM_VERSION%_x86_SelfContained.zip" ./Packages/x86_SelfContained/* ./Packages/licenses_SelfContained/* > nul
+7z a -mx9 "./Packages/ListComPort_v%NP_LSCOM_VERSION%_x64_Single.zip" ./Packages/x64_DotNet6/* ./Packages/licenses_Others/* > nul
+7z a -mx9 "./Packages/ListComPort_v%NP_LSCOM_VERSION%_x64_SelfContained.zip" ./Packages/x64_SelfContained/* ./Packages/licenses_SelfContained/* > nul
+7z a -mx9 "./Packages/ListComPort_v%NP_LSCOM_VERSION%_arm_Single.zip" ./Packages/arm_DotNet6/* ./Packages/licenses_Others/* > nul
+7z a -mx9 "./Packages/ListComPort_v%NP_LSCOM_VERSION%_arm_SelfContained.zip" ./Packages/arm_SelfContained/* ./Packages/licenses_SelfContained/* > nul
+7z a -mx9 "./Packages/ListComPort_v%NP_LSCOM_VERSION%_arm64_Single.zip" ./Packages/arm64_DotNet6/* ./Packages/licenses_Others/* > nul
+7z a -mx9 "./Packages/ListComPort_v%NP_LSCOM_VERSION%_arm64_SelfContained.zip" ./Packages/arm64_SelfContained/* ./Packages/licenses_SelfContained/* > nul
 
 echo.
 
@@ -309,6 +312,7 @@ set NP_PATH_7ZIP=
 set NP_IS_WIX_VALID=
 set NP_REDO_PATH_CHECK=
 set WixTargetPlatform=
+set NP_LSCOM_VERSION=
 
 popd
 

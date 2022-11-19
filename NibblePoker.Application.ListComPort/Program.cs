@@ -1,4 +1,7 @@
-﻿using NibblePoker.Library.Arguments;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using NibblePoker.Library.Arguments;
 using NibblePoker.Library.ComPortWatcher;
 
 namespace NibblePoker.Application.ListComPort;

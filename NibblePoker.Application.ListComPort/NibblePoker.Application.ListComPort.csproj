@@ -11,9 +11,9 @@
         <FileVersion>3.0.0</FileVersion>
         <Version>3.0.0</Version>
         <NeutralLanguage>en-001</NeutralLanguage>
-        <ApplicationIcon>..\lscom-v2-text-01.ico</ApplicationIcon>
         <IsPackable>false</IsPackable>
         <Authors>Herwin Bozet (@NibblePoker)</Authors>
+        <ApplicationIcon>..\NibblePoker.Packaging.ListComPort\Icons\lscom-v2-text-01.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
@@ -25,7 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="..\lscom-v2-text-01.ico">
+      <None Include="..\NibblePoker.Packaging.ListComPort\Icons\lscom-v2-text-01.ico">
         <Link>lscom-v2-text-01.ico</Link>
       </None>
     </ItemGroup>

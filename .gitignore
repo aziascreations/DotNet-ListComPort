@@ -1,4 +1,6 @@
 .idea/
+.vs/
+
 Builds/any/
 Builds/arm*/
 Builds/x*/
@@ -8,10 +10,10 @@ bin/
 obj/
 
 NibblePoker.Packaging.ListComPort/Trash/
-NibblePoker.Packaging.ListComPort/*.msi
 NibblePoker.Packaging.ListComPort/*.wixobj
 NibblePoker.Packaging.ListComPort/*.wixpdb
 NibblePoker.Packaging.ListComPort/*.bat
+NibblePoker.Packaging.ListComPort/AppX/
 
 Packages/
 
@@ -20,5 +22,8 @@ Packages/
 *.so
 *.zip
 *.url
+*.crt
+*.pem
+*.msi
 
 notes.txt

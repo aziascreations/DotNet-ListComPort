@@ -102,5 +102,12 @@ Finally, you should be able to find the executables in the "[Builds](Builds/)" f
 and the distributable packages in the "[Packages](Packages/)" folder.
 
 
-## License
+## Licenses
+
+### Repository
 This project and all the libraries it uses are licensed under the [MIT](LICENSE) license.
+
+### Builds
+Some of the final binaries are covered by additional licenses, they are present in the "[NibblePoker.Packaging.ListComPort/Licenses](NibblePoker.Packaging.ListComPort/Licenses)" folder and are automatically packaged with the appropriate builds during the packaging process.
+
+[TODO: Add details]

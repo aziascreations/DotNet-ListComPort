@@ -2,7 +2,7 @@
 <Include>
 	<!-- Shared variables -->
 	<?define ProductManufacturer = "Herwin Bozet" ?>
-	<?define PackageDescription = "ListComPort / lscom" ?> <!-- Also reffered to as 'Subject' ! -->
+	<?define PackageDescription = "ListComPort (lscom)" ?> <!-- Also reffered to as 'Subject' ! -->
 	<?define PackageComments = "This installer database contains the logic and data required to install ListComPort." ?>
 	
 	<!-- TODO: Add contact, support and help fields ! -->
@@ -17,8 +17,7 @@
 		<?define PackagePlatform = "x64" ?>
 		
 		<?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
-		<?define FilePathExecutable = "..\Builds\x64_single_sc_trim_comp\NibblePoker.Application.ListComPort.exe" ?>
-		<?define FilePathLicense = "..\LICENSE" ?>
+		<?define FilePathExecutable = "..\..\Builds\x64_single_sc_trim_comp\NibblePoker.Application.ListComPort.exe" ?>
 	<?else ?>
 		<?define Win64 = "no" ?>
 		
@@ -28,7 +27,6 @@
 		<?define PackagePlatform = "x86" ?>
 		
 		<?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
-		<?define FilePathExecutable = "..\Builds\x86_single_sc_trim_comp\NibblePoker.Application.ListComPort.exe" ?>
-		<?define FilePathLicense = "..\LICENSE" ?>
+		<?define FilePathExecutable = "..\..\Builds\x86_single_sc_trim_comp\NibblePoker.Application.ListComPort.exe" ?>
 	<?endif ?>
 </Include>
