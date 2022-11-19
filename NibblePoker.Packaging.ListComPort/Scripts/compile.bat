@@ -4,13 +4,13 @@
 pushd %~dp0
 cd /D "%~dp0"
 
-:: Calling the common script
+:: Calling the common script.
 call .\commons.bat
 
-:: Moving to the project's root
+:: Moving to the project's root.
 cd .\..\..
 
-:: Cleaning
+:: Cleaning.
 echo Removing any old binaries and any intermediate files...
 rmdir /Q /S NibblePoker.Application.ListComPort\bin 2>nul
 rmdir /Q /S NibblePoker.Application.ListComPort\obj 2>nul
@@ -20,7 +20,7 @@ rmdir /Q /S Builds 2>nul
 mkdir Builds
 echo.
 
-:: Compiling
+:: Compiling.
 echo Building "Any" target...
 dotnet publish "./NibblePoker.Application.ListComPort/NibblePoker.Application.ListComPort.csproj" --nologo -o "./Builds/any/"
 echo.
@@ -39,5 +39,5 @@ dotnet publish "./NibblePoker.Application.ListComPort/NibblePoker.Application.Li
 dotnet publish "./NibblePoker.Application.ListComPort/NibblePoker.Application.ListComPort.csproj" --nologo -r win-arm64 -c Release -o "./Builds/arm64_single_sc_trim_comp" --self-contained true -p:PublishReadyToRun=true -p:PublishTrimmed=true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true
 echo.
 
-:: Going back to the original directory
+:: Going back to the original directory.
 popd

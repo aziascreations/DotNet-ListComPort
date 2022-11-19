@@ -3,5 +3,5 @@
 	<!--
 	  Custom string for the license agreement.
 	-->
-	<String Id="LicenseAgreementDlgLicenseAcceptedCheckBox">I accept the terms in these License Agreements and Privacy Statement</String>
+	<String Id="LicenseAgreementDlgLicenseAcceptedCheckBox">I accept all the terms in these License Agreements and Privacy Statement</String>
 </WixLocalization>

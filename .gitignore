@@ -10,9 +10,6 @@ bin/
 obj/
 
 NibblePoker.Packaging.ListComPort/Trash/
-NibblePoker.Packaging.ListComPort/*.wixobj
-NibblePoker.Packaging.ListComPort/*.wixpdb
-NibblePoker.Packaging.ListComPort/*.bat
 NibblePoker.Packaging.ListComPort/AppX/
 
 Packages/
@@ -25,5 +22,7 @@ Packages/
 *.crt
 *.pem
 *.msi
+*.wixobj
+*.wixpdb
 
 notes.txt

@@ -2,7 +2,7 @@
 <Include>
 	<!-- Shared variables -->
 	<?define ProductManufacturer = "Herwin Bozet" ?>
-	<?define PackageDescription = "ListComPort (lscom)" ?> <!-- Also reffered to as 'Subject' ! -->
+	<?define PackageDescription = "ListComPort (lscom)" ?> <!-- Also referred to as 'Subject' ! -->
 	<?define PackageComments = "This installer database contains the logic and data required to install ListComPort." ?>
 	
 	<!-- TODO: Add contact, support and help fields ! -->
@@ -12,7 +12,7 @@
 		<?define Win64 = "yes" ?>
 		
 		<?define ProductName = "ListComPort (x64)" ?>
-		<?define ProductUpgradeCode = "1AB189BA-5B13-4448-A916-4E25B814D2AA" ?>
+		<?define ProductUpgradeCode = "4ca89060-e293-4a37-8b9c-18fa3218598a" ?>
 		
 		<?define PackagePlatform = "x64" ?>
 		
@@ -22,7 +22,7 @@
 		<?define Win64 = "no" ?>
 		
 		<?define ProductName = "ListComPort (x86)" ?>
-		<?define ProductUpgradeCode = "1F633E9D-7F55-449D-8BC9-56F9E72342E8" ?>
+		<?define ProductUpgradeCode = "33a888dd-c978-4fd2-947c-87a65ee98912" ?>
 		
 		<?define PackagePlatform = "x86" ?>
 		

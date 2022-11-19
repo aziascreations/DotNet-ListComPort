@@ -79,18 +79,34 @@
 		</Directory>
 		
 		<ComponentGroup Id="ProductComponentGroup">
-			<Component Id="Software" Guid="2b0b66d2-fc39-485b-baee-e5b0da8142a0" Directory="INSTALLFOLDER" Feature="FeatureExecutables" Win64="$(var.Win64)">
+			<Component Id="Software" Guid="04205639-cc78-42be-974f-d6767df6e3fd" Directory="INSTALLFOLDER" Feature="FeatureExecutables" Win64="$(var.Win64)">
 				<File KeyPath="yes" Source="$(var.FilePathExecutable)" Name="lscom.exe" />
 			</Component>
-			<Component Id="Licenses" Guid="5aa34a6f-2b5c-4544-8979-a20d6c1d3f3c" Directory="LICENSESFOLDER" Feature="FeatureLicenses" Win64="$(var.Win64)">
+			
+			<!--
+			  Adding the license files as separate components as per the official documentation's recommendation.
+			  See: https://wixtoolset.org/docs/v3/howtos/files_and_registry/add_a_file/
+			-->
+			<Component Id="License_DotNetCore" Guid="599cbdb2-e95a-4377-b082-31f695860c11" Directory="LICENSESFOLDER" Feature="FeatureLicenses" Win64="$(var.Win64)">
 				<File Source="..\Licenses\License_DotNetCore.pdf" Name="License_DotNetCore.pdf" />
+			</Component>
+			<Component Id="License_MicrosoftDotNet" Guid="7107be86-a962-4573-9c06-4594764da052" Directory="LICENSESFOLDER" Feature="FeatureLicenses" Win64="$(var.Win64)">
 				<File Source="..\Licenses\License_Microsoft_DotNet.pdf" Name="License_Microsoft_DotNet.pdf" />
+			</Component>
+			<Component Id="License_MicrosoftVisualStudio" Guid="ff28223f-47ff-4e11-85f3-50a7f4c6ebc9" Directory="LICENSESFOLDER" Feature="FeatureLicenses" Win64="$(var.Win64)">
 				<File Source="..\Licenses\License_Microsoft_VisualStudio.pdf" Name="License_Microsoft_VisualStudio.pdf" />
+			</Component>
+			<Component Id="License_NibblePoker" Guid="b69feeb3-2e1f-4d72-b49c-b9f3331374af" Directory="LICENSESFOLDER" Feature="FeatureLicenses" Win64="$(var.Win64)">
 				<File Source="..\Licenses\License_NibblePoker.pdf" Name="License_NibblePoker.pdf" />
+			</Component>
+			<Component Id="License_WindowsSDK" Guid="658d086b-2763-49e6-88c5-50a4d6530d3a" Directory="LICENSESFOLDER" Feature="FeatureLicenses" Win64="$(var.Win64)">
 				<File Source="..\Licenses\License_WindowsSDK.pdf" Name="License_WindowsSDK.pdf" />
+			</Component>
+			<Component Id="License_PrivacyMicrosoft" Guid="341c0cef-a71e-4ee4-b52e-f878fd4029fc" Directory="LICENSESFOLDER" Feature="FeatureLicenses" Win64="$(var.Win64)">
 				<File Source="..\Licenses\PrivacyNotice_Microsoft_2022-09.pdf" Name="PrivacyNotice_Microsoft_2022-09.pdf" />
 			</Component>
-			<Component Id="Registry" Guid="73b5468a-97b3-4469-a95d-70330ed229e6" Directory="INSTALLFOLDER" Feature="FeatureRegistryPath" Win64="$(var.Win64)">
+			
+			<Component Id="Registry" Guid="fa1f61bf-22a3-4768-ac84-6198a3f527eb" Directory="INSTALLFOLDER" Feature="FeatureRegistryPath" Win64="$(var.Win64)">
 				<Environment Id="UpdatePath" Name="PATH" Part="last" Action="set" Permanent="yes" System="yes" Value="[INSTALLFOLDER]" />
 				<CreateFolder Directory="INSTALLFOLDER" />
 			</Component>
